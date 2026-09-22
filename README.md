@@ -1,6 +1,6 @@
 # Round Robin Arbiter with UVM Testbench
 
-I worked through this on EDA Playground and the link is here; it seems as if you need an account to run code so I will need to migrate the code and logs and organize the files well because there are a lot: https://edaplayground.com/x/NWPL
+I worked through this on EDA Playground and the link is here; it seems as if you need an account to run code so I will host a pyuvm implementation on GitHub and include the UVM implementation here: https://edaplayground.com/x/NWPL
 
 Adapted from Matt Weber's "Arbiters: Design Ideas and Coding Styles" and the FreeCores Verilog implementation
 
