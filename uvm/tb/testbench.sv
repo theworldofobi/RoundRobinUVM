@@ -17,16 +17,16 @@ module tb_top;
   req_if          rq [ARB_N] (clk);
 
   rr_arbiter #(.N(ARB_N)) dut (
-    .clk  (clk),
-    .rst_n(arb.rst_n),
-    .req  (arb.req),
-    .gnt  (arb.gnt)
+    .clk   (clk),
+    .rst_n (arb.rst_n),
+    .req   (arb.req),
+    .grant  (arb.grant)
   );
 
   for (genvar i = 0; i < ARB_N; i++) begin : g_req
     assign rq[i].rst_n = arb.rst_n;
     assign arb.req[i]  = rq[i].req;
-    assign rq[i].gnt   = arb.gnt[i];
+    assign rq[i].grant   = arb.grant[i];
 
     initial uvm_config_db#(virtual req_if)::set(
       null, $sformatf("uvm_test_top.env.req_agt_%0d*", i), "vif", rq[i]);

@@ -3,7 +3,7 @@ class arb_snap extends uvm_sequence_item;
 
   logic             rst_n;
   logic [ARB_N-1:0] req;
-  logic [ARB_N-1:0] gnt;
+  logic [ARB_N-1:0] grant;
   longint unsigned  cycle;
 
   function new(string name = "arb_snap");
@@ -11,12 +11,12 @@ class arb_snap extends uvm_sequence_item;
   endfunction
 
   function string convert2string();
-    return $sformatf("cyc=%0d rst_n=%b req=%b gnt=%b", cycle, rst_n, req, gnt);
+    return $sformatf("cyc=%0d rst_n=%b req=%b grant=%b", cycle, rst_n, req, grant);
   endfunction
 endclass
 
-class gnt_monitor extends uvm_monitor;
-  `uvm_component_utils(gnt_monitor)
+class grant_monitor extends uvm_monitor;
+  `uvm_component_utils(grant_monitor)
 
   virtual arb_if #(ARB_N) vif;
   uvm_analysis_port #(arb_snap) ap;
@@ -40,7 +40,7 @@ class gnt_monitor extends uvm_monitor;
       s       = arb_snap::type_id::create("s");
       s.rst_n = vif.mon_cb.rst_n;
       s.req   = vif.mon_cb.req;
-      s.gnt   = vif.mon_cb.gnt;
+      s.grant   = vif.mon_cb.grant;
       s.cycle = cyc++;
       ap.write(s);
     end

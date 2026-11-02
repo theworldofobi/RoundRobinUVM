@@ -5,7 +5,7 @@ package arb_env_pkg;
   import req_agent_pkg::*;
 
   `include "arb_env_cfg.svh"
-  `include "gnt_monitor.svh"
+  `include "grant_monitor.svh"
   `include "arb_ref_model.svh"
   `include "arb_scoreboard.svh"
   `include "arb_coverage.svh"

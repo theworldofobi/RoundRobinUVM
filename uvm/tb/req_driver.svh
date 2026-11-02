@@ -34,7 +34,7 @@ class req_driver extends uvm_driver #(req_item);
     @(vif.cb);
     repeat (it.delay) @(vif.cb);
     vif.cb.req <= 1'b1;
-    do @(vif.cb); while (vif.cb.gnt !== 1'b1);
+    do @(vif.cb); while (vif.cb.grant !== 1'b1);
     repeat (it.hold - 1) @(vif.cb);
     vif.cb.req <= 1'b0;
   endtask

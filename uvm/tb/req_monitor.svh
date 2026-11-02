@@ -33,7 +33,7 @@ class req_monitor extends uvm_monitor;
             wait_n = 1; hold_n = 0; st = S_WAIT;
           end else idle_n++;
         S_WAIT:
-          if (vif.mon_cb.gnt === 1'b1) begin
+          if (vif.mon_cb.grant === 1'b1) begin
             hold_n = 1; st = S_GRANT;
           end else wait_n++;
         S_GRANT:

@@ -4,7 +4,7 @@ class arb_scoreboard extends uvm_scoreboard;
   uvm_analysis_imp #(arb_snap, arb_scoreboard) snap_imp;
   arb_ref_model model;
 
-  bit [ARB_N-1:0] exp_gnt, prev_gnt, prev_req;
+  bit [ARB_N-1:0] exp_grant, prev_grant, prev_req;
   int unsigned    wait_cnt[ARB_N], max_wait[ARB_N], grants[ARB_N];
   int unsigned    n_cmp, n_err;
 
@@ -21,35 +21,35 @@ class arb_scoreboard extends uvm_scoreboard;
   function void write(arb_snap s);
     if (s.rst_n !== 1'b1) begin
       model.reset();
-      exp_gnt = '0; prev_gnt = '0; prev_req = '0;
+      exp_grant = '0; prev_grant = '0; prev_req = '0;
       foreach (wait_cnt[i]) wait_cnt[i] = 0;
       return;
     end
 
-    if ($isunknown(s.req) || $isunknown(s.gnt)) begin
+    if ($isunknown(s.req) || $isunknown(s.grant)) begin
       n_err++;
       `uvm_error("SB_X", s.convert2string())
       return;
     end
 
     n_cmp++;
-    if (s.gnt !== exp_gnt) begin
+    if (s.grant !== exp_grant) begin
       n_err++;
-      `uvm_error("SB_MISMATCH", $sformatf("%s expected gnt=%b",
-                 s.convert2string(), exp_gnt))
+      `uvm_error("SB_MISMATCH", $sformatf("%s expected grant=%b",
+                 s.convert2string(), exp_grant))
     end
 
     check_fairness(s);
-    exp_gnt  = model.step(s.req);
-    prev_gnt = s.gnt;
+    exp_grant  = model.step(s.req);
+    prev_grant = s.grant;
     prev_req = s.req;
   endfunction
 
   protected function void check_fairness(arb_snap s);
-    bit new_grant = (s.gnt != '0) && (s.gnt != prev_gnt);
+    bit new_grant = (s.grant != '0) && (s.grant != prev_grant);
     for (int i = 0; i < ARB_N; i++) begin
-      bit was_waiting = prev_req[i] && !prev_gnt[i];
-      if (s.gnt[i]) begin
+      bit was_waiting = prev_req[i] && !prev_grant[i];
+      if (s.grant[i]) begin
         if (new_grant) grants[i]++;
         wait_cnt[i] = 0;
       end else if (!s.req[i]) begin

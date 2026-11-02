@@ -3,7 +3,7 @@ class arb_env extends uvm_env;
 
   arb_env_cfg    cfg;
   req_agent      agt[ARB_N];
-  gnt_monitor    gmon;
+  grant_monitor    gmon;
   arb_scoreboard sb;
   arb_coverage   cov;
   arb_vseqr      vseqr;
@@ -23,7 +23,7 @@ class arb_env extends uvm_env;
       agt[i] = req_agent::type_id::create(nm, this);
     end
 
-    gmon  = gnt_monitor::type_id::create("gmon", this);
+    gmon  = grant_monitor::type_id::create("gmon", this);
     vseqr = arb_vseqr::type_id::create("vseqr", this);
     if (cfg.en_sb)  sb  = arb_scoreboard::type_id::create("sb", this);
     if (cfg.en_cov) cov = arb_coverage::type_id::create("cov", this);

@@ -12,7 +12,7 @@ class arb_coverage extends uvm_component;
   int               prev_gidx;
   int unsigned      req_pop;
   bit [ARB_N-1:0]   dec_req;
-  bit [ARB_N-1:0]   prev_gnt, prev_req;
+  bit [ARB_N-1:0]   prev_grant, prev_req;
 
   covergroup cg_cycle;
     cp_pop: coverpoint req_pop {
@@ -26,11 +26,11 @@ class arb_coverage extends uvm_component;
   covergroup cg_decision;
     cp_ptr:  coverpoint ptr       { bins ptr_v[] = {[0:ARB_N-1]}; }
     cp_req:  coverpoint dec_req   { bins pat[]   = {[1:(1<<ARB_N)-1]}; }
-    cp_gnt:  coverpoint gidx      { bins g[]     = {[0:ARB_N-1]}; }
+    cp_grant:  coverpoint gidx      { bins g[]     = {[0:ARB_N-1]}; }
     cp_prev: coverpoint prev_gidx { bins g[]     = {[0:ARB_N-1]}; }
     cp_wrap: coverpoint gidx      { bins wrap    = (ARB_N-1 => 0); }
     x_ptr_req: cross cp_ptr, cp_req;
-    x_trans:   cross cp_prev, cp_gnt;
+    x_trans:   cross cp_prev, cp_grant;
   endgroup
 
   covergroup cg_req with function sample(req_item t);
@@ -73,7 +73,7 @@ class arb_coverage extends uvm_component;
 
   protected function void clear_state();
     ptr = ARB_N - 1; prev_gidx = -1;
-    prev_gnt = '0;   prev_req = '0;
+    prev_grant = '0;   prev_req = '0;
   endfunction
 
   protected function int onehot_idx(bit [ARB_N-1:0] v);
@@ -89,14 +89,14 @@ class arb_coverage extends uvm_component;
     req_pop = $countones(s.req);
     cg_cycle.sample();
 
-    if (s.gnt != '0 && s.gnt != prev_gnt) begin
-      gidx    = onehot_idx(s.gnt);
+    if (s.grant != '0 && s.grant != prev_grant) begin
+      gidx    = onehot_idx(s.grant);
       dec_req = prev_req;
       cg_decision.sample();
       ptr       = gidx;
       prev_gidx = gidx;
     end
-    prev_gnt = s.gnt;
+    prev_grant = s.grant;
     prev_req = s.req;
   endfunction
 
