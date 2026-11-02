@@ -16,7 +16,7 @@ module tb_top;
   arb_if #(ARB_N) arb (clk);
   req_if          rq [ARB_N] (clk);
 
-  round_robin__arbiter #(.N(ARB_N)) dut (
+  round_robin_arbiter #(.N(ARB_N)) dut (
     .clk   (clk),
     .rst_n (arb.rst_n),
     .req   (arb.req),
