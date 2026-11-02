@@ -68,7 +68,7 @@ module round_robin_arbiter #(
       mask_q <= '1;
     end else if (!hold) begin
       grant  <= grant_d;
-      if (!req) mask_q <= mask_d;
+      if (|req) mask_q <= mask_d;
     end
   end
   
